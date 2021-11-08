@@ -10,7 +10,6 @@
 class AstPrinter: public Visitor{
 	public:
 		std::string print(Expr &expr){
-			std::cout<<"A\n";
 			return expr.accept(*this);
 		}
 
@@ -56,14 +55,9 @@ class AstPrinter: public Visitor{
 };
 
 int main(){
-	//Print the expression for -123*45.67
-	//TODO: try using the new keyword
-	Literal l1(Token(NUMBER,45.67,1));
-	Grouping g1(&l1);
-	Literal l2(Token(NUMBER,123,1));
-	Unary u1(Unary(Token(MINUS,"-",1),&l2));
-	Binary bin(&u1,Token(STAR,"*",1),&g1);
-	Expr *expr=&bin;
+	Expr *expr=new Binary(new Unary(Token(MINUS,"-",1),new Literal(Token(NUMBER,123,1))),
+			Token(STAR,"*",1),
+			new Grouping(new Literal(Token(NUMBER,45.67,1))));
 
 	AstPrinter printer;
 	std::cout<<printer.print(*expr)<<'\n';

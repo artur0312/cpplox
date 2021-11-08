@@ -29,7 +29,6 @@ class Grouping: public Expr{
 		Grouping(Expr *expression): expression(expression){
 		}
 		std::string accept(Visitor &v) {
-			std::cout<<"Grouping\n";
 			return v.visitGrouping(*this);
 		}
 		const Expr *expression;
@@ -40,7 +39,6 @@ class Literal:public Expr{
 		Literal(Token value):value(value){
 		}
 		std::string accept(Visitor &v) {
-			std::cout<<"Literal\n";
 			return v.visitLiteral(*this);
 		}
 		const Token value;
@@ -52,7 +50,6 @@ class Binary:public Expr{
 		}
 
 		std::string accept(Visitor &v) {
-			std::cout<<"Binary\n";
 			return v.visitBinary(*this);
 		}
 
@@ -66,7 +63,6 @@ class Unary: public Expr{
 		Unary(Token op, Expr *right):op(op),right(right){
 		}
 		std::string accept(Visitor &v) {
-			std::cout<<"Unary\n";
 			return v.visitUnary(*this);
 		}
 		const Token op;

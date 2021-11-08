@@ -1,5 +1,4 @@
 #include "scanner.h"
-#include "token.h"
 #include "errors.h"
 
 //File that contains the functions used to parse a string into tokens

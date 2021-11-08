@@ -39,8 +39,11 @@ class Token{
 		Token(TokenType type,double value,int line);
 		//Overload the extraction operator
 		void print();
-		
-
+		//Getters
+		TokenType getType () const;
+		std::string getLexeme () const;
+		double getValue () const;
+		int getLine () const;
 };
 
 

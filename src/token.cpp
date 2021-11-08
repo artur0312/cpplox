@@ -15,6 +15,7 @@ Token::Token(TokenType i_type,double i_value,int i_line){
 	value=i_value;
 	line=i_line;
 }
+//Print the token
 void Token::print(){
 	if(lexeme!="")
 		std::cout<<type<<" "<<lexeme<<" "<<'\n';
@@ -23,5 +24,19 @@ void Token::print(){
 
 }
 
+//Getter methods
+TokenType Token::getType() const{
+	return type;
+}
 
+std::string Token::getLexeme() const{
+	return lexeme;
+}
 
+double Token::getValue() const{
+	return value;
+}
+
+int Token::getLine() const{
+	return line;
+}

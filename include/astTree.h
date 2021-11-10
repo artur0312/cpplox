@@ -4,69 +4,75 @@
 #include "token.h"
 
 //Forward declaration of the classes
-class Binary;
-class Grouping;
-class Literal;
-class Unary;
+template <class T> class Binary;
+template <class T> class Grouping;
+template <class T> class Literal;
+template <class T> class Unary;
 
+template <class T>
 class Visitor{
 	public:
-		virtual std::string visitBinary(Binary)=0;
-		virtual std::string visitGrouping(Grouping)=0;
-		virtual std::string visitLiteral(Literal)=0;
-		virtual std::string visitUnary(Unary)=0;
+		virtual T visitBinary(Binary<T>)=0;
+		virtual T visitGrouping(Grouping<T>)=0;
+		virtual T visitLiteral(Literal<T>)=0;
+		virtual T visitUnary(Unary<T>)=0;
 };
 
+template <class T>
 class Expr{
 	//A virtual function to allow the instantiation of Expr
 	public:
-		virtual std::string accept(Visitor &v)=0;
+		virtual T accept(Visitor<T> &v)=0;
 };
 
 
-class Grouping: public Expr{
+template <class T>
+class Grouping: public Expr<T>{
 	public:
-		Grouping(Expr *expression): expression(expression){
+		Grouping(Expr<T> *expression): expression(expression){
 		}
-		std::string accept(Visitor &v) {
+		T accept(Visitor<T> &v) {
 			return v.visitGrouping(*this);
 		}
-		const Expr *expression;
+		const Expr<T> *expression;
 };
 
-class Literal:public Expr{
+template <class T>
+class Literal:public Expr<T>{
 	public:
 		Literal(Token value):value(value){
 		}
-		std::string accept(Visitor &v) {
+		T accept(Visitor<T> &v) {
 			return v.visitLiteral(*this);
 		}
 		const Token value;
 };
 
-class Binary:public Expr{
+template <class T>
+class Binary:public Expr<T>{
 	public:
-		Binary(Expr *left,Token op, Expr * right):left(left),op(op),right(right){
+		Binary(Expr<T> *left,Token op, Expr<T> * right):left(left),op(op),right(right){
 		}
 
-		std::string accept(Visitor &v) {
+		T accept(Visitor<T> &v) {
 			return v.visitBinary(*this);
 		}
 
-		const Expr *left;
+		const Expr<T> *left;
 		const Token op;
-		const Expr *right;
+		const Expr<T> *right;
 };
 
-class Unary: public Expr{
+template <class T>
+class Unary: public Expr<T>{
 	public:
-		Unary(Token op, Expr *right):op(op),right(right){
+		Unary(Token op, Expr<T> *right):op(op),right(right){
 		}
-		std::string accept(Visitor &v) {
+		T accept(Visitor<T> &v) {
 			return v.visitUnary(*this);
 		}
 		const Token op;
-		const Expr *right;
+		const Expr<T> *right;
 };
 
 #endif

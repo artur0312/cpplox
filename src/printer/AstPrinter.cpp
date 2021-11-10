@@ -7,9 +7,9 @@
 #include "astTree.h"
 #include "token.h"
 
-class AstPrinter: public Visitor{
+class AstPrinter: public Visitor<std::string>{
 	public:
-		std::string print(Expr &expr){
+		std::string print(Expr<std::string> &expr){
 			return expr.accept(*this);
 		}
 
@@ -18,9 +18,9 @@ class AstPrinter: public Visitor{
 			va_list args;
 			va_start(args,name);
 			std::string s="("+name;
-			Expr *expr;
+			Expr<std::string> *expr;
 			for(int i=0;i<parameters-1;i++){
-				expr=va_arg(args,Expr *);
+				expr=va_arg(args,Expr<std::string> *);
 				s+=" "+expr->accept(*this);;
 			}
 			s+=")";
@@ -30,14 +30,14 @@ class AstPrinter: public Visitor{
 
 
 		//Implement the visit methods
-		std::string visitBinary(Binary expr) {
+		std::string visitBinary(Binary<std::string> expr) {
 			return parenthesize(3,expr.op.getLexeme(),expr.left,expr.right);
 		}
 
-		std::string visitGrouping(Grouping expr) {
+		std::string visitGrouping(Grouping<std::string> expr) {
 			return parenthesize(2,"group",expr.expression);
 		}
-		std::string visitLiteral(Literal expr) {
+		std::string visitLiteral(Literal<std::string> expr) {
 			if(expr.value.getType()==STRING and expr.value.getLexeme()==""){
 				return "nill";
 			}
@@ -49,15 +49,15 @@ class AstPrinter: public Visitor{
 			}
 		}
 
-		std::string visitUnary(Unary expr) {
+		std::string visitUnary(Unary<std::string> expr) {
 			return parenthesize(2,expr.op.getLexeme(),expr.right);
 		}
 };
 
 int main(){
-	Expr *expr=new Binary(new Unary(Token(MINUS,"-",1),new Literal(Token(NUMBER,123,1))),
+	Expr<std::string> *expr=new Binary<std::string> (new Unary<std::string>(Token(MINUS,"-",1),new Literal<std::string>(Token(NUMBER,123,1))),
 			Token(STAR,"*",1),
-			new Grouping(new Literal(Token(NUMBER,45.67,1))));
+			new  Grouping <std::string> (new  Literal <std::string> (Token(NUMBER,45.67,1))));
 
 	AstPrinter printer;
 	std::cout<<printer.print(*expr)<<'\n';

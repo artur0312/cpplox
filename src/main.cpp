@@ -1,6 +1,9 @@
 #include "errors.h"
 #include "token.h"
 #include "scanner.h"
+#include "parser.h"
+#include "astTree.h"
+#include "astPrinter.h"
 #include "main.h"
 //Keeps track if there is an error during the execution
 bool hadError=false;
@@ -45,7 +48,7 @@ void runPrompt(){
 			break;
 		}
 		run(line);
-		//reses the error flag if there was one on the execution of the line
+		//reset the error flag if there was one on the execution of the line
 		if(hadError){
 			hadError=false;
 		}
@@ -57,10 +60,15 @@ void run(std::string source){
 	Scanner scan(source);
 	std::vector<Token> tokens=scan.scanTokens();
 
-	//Just print the tokens for the moment
-	for(Token t: tokens){
-		t.print();
-	}
+	Parser parse(tokens);
+	Expr<std::string> *expression=parse.parse();
+	
+	//Stop if there was a syntax error
+	if(hadError)
+		return;
+
+	AstPrinter printer;
+	std::cout<<printer.print(*expression)<<'\n';
 }
 	
 	

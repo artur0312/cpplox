@@ -20,14 +20,14 @@ class Visitor{
 };
 
 //See if Expr needs to be an template class or if only the function accept must be a template
-template <class T>
+template <class T=void>
 class Expr{
 	//Expr can't be instantiated, but I can use pointers
 	public:
 		virtual T accept(Visitor<T> &v)=0;
 };
 
-template <class T>
+template <class T=void>
 class Binary: public Expr<T>{
 	public:
 		Binary(Expr<T> *left, Token op, Expr<T> *right): left(left), op(op), right(right){
@@ -41,7 +41,7 @@ class Binary: public Expr<T>{
 		const Token op;
 		const Expr<T> *right;
 };
-template <class T>
+template <class T=void>
 class Grouping: public Expr<T>{
 	public:
 		Grouping(Expr<T> *expression): expression(expression){
@@ -53,7 +53,7 @@ class Grouping: public Expr<T>{
 
 		const Expr<T> *expression;
 };
-template <class T>
+template <class T=void>
 class Literal: public Expr<T>{
 	public:
 		Literal(Token value): value(value){
@@ -65,7 +65,7 @@ class Literal: public Expr<T>{
 
 		const Token value;
 };
-template <class T>
+template <class T=void>
 class Unary: public Expr<T>{
 	public:
 		Unary(Token op, Expr<T> *right): op(op), right(right){

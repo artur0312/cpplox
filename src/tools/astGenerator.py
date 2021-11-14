@@ -68,7 +68,7 @@ printer.write('\n')
 
 #The Expr class
 printer.write("//See if Expr needs to be an template class or if only the function accept must be a template\n")
-printer.write("template <class T>\n")
+printer.write("template <class T=void>\n")
 printer.write("class Expr{\n")
 printer.write("\t//Expr can't be instantiated, but I can use pointers\n")
 printer.write("\tpublic:\n")
@@ -78,7 +78,7 @@ printer.write("};\n\n")
 for c in classList:
     className=getClassName(c)
     attributesList=getAttributesList(c)
-    printer.write("template <class T>\n")
+    printer.write("template <class T=void>\n")
     printer.write("class "+className+": public Expr<T>{\n")
     printer.write("\tpublic:\n")
     #constructor
